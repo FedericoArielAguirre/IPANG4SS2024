@@ -18,12 +18,16 @@ clear
 A = [2 -1 0 0; -1 2 -1 0; 0 -1 2 -1; 0 0 -1 2]; %Matriz longitud barra A
 b = [10; 0; 0; 200]; %Matriz b con temperaturas
 
+% Definimos las variables
+tol = 1e-6;
+max_iter = 100;
+
 % Metodo de Jacobi
 D = diag(A);
 R = A - diag(D);
 x_jacobi = zeros(4, 1);
-tol = 1e-6;
-max_iter = 100;
+%tol = 1e-6;
+%max_iter = 100;
 
 % Bucle hasta que se alcanza la tolerancia
 for i = 1:max_iter
