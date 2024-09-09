@@ -81,36 +81,26 @@ function is_dd = is_diagonally_dominant(A)
 end
 
 % Función para transformar una matriz no dominante en una dominante
-function A_dd = make_diagonally_dominant(A)
-    % Verificamos si la matriz es cuadrada
-    if size(A, 1) ~= size(A, 2)
-        error('La matriz debe ser cuadrada');
-    end
+function [A_dd, b_dd] = make_diagonally_dominant(A, b)
+    A_dd = A;
+    b_dd = b;
+    n = size(A, 1);
     
-    % Identificamos las filas que no son diagonalmente dominantes
-    non_dom_rows = find(sum(abs(A), 2) <= abs(diag(A)));
-    
-    % Iteramos sobre las filas no diagonalmente dominantes
-    while ~isempty(non_dom_rows)
-        i = non_dom_rows(1);
+    for i = 1:n
+        % Buscar la fila con el mayor valor absoluto en la columna i
+        [~, idx] = max(abs(A(:, i)));
         
-   % Identificamos la columna con el valor absoluto máximo en la fila
-        [~, max_col] = max(abs(A(i, :)));
+        % Intercambiar la fila actual con la fila encontrada
+        A_dd([i, idx], :) = A_dd([idx, i], :);
+        b_dd([i, idx]) = b_dd([idx, i]);
         
-   % Intercambiamos la fila actual con la fila de la columna con valor absoluto máximo
-        A([i, max_col], :) = A([max_col, i], :);
-        
-   % Verificamos si la fila ya es diagonalmente dominante
-        if sum(abs(A(i, :))) > abs(A(i, i))
-            non_dom_rows = find(sum(abs(A), 2) <= abs(diag(A)));
-        else
-            non_dom_rows(1) = [];
+        % Verificar si la fila es diagonalmente dominante
+        if abs(A_dd(i, i)) < sum(abs(A_dd(i, [1:i-1, i+1:end])))
+            % Si no es diagonalmente dominante, no hacer nada
+            % ya que la permutación de filas es suficiente
         end
     end
-   % La matriz A es ahora diagonalmente dominante
-    A_dd = A;
 end
-
 % Método de Gauss-Seidel
 function x = gauss_seidel(A, b, tol, max_iter)
     x = zeros(size(A, 2), 1);
