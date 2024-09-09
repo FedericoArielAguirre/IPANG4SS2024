@@ -16,24 +16,23 @@ b_b = [4; 1; -4];
 A_c = [1 0.5 0.5; 0.5 1 0.5; 0.5 0.5 1];
 b_c = [2; 2; 2];
 
-% Tolerancia y número máximo de iteraciones
+% Tolerancia y numero maximo de iteraciones
 tol = 1e-6;
 max_iter = 100;
 
-% Resolver sistemas utilizando ambos métodos
 fprintf('Sistema a)\n');
 if is_diagonally_dominant(A_a)
     fprintf('La matriz es diagonalmente dominante\n');
     x_gaussseidel_a = gauss_seidel(A_a, b_a, tol, max_iter);
     x_jacobi_a = jacobi(A_a, b_a, tol, max_iter);
 else
-    A_a_dd = make_diagonally_dominant(A_a);
+    [A_a_dd, b_a_dd] = make_diagonally_dominant(A_a, b_a);
     fprintf('La matriz no es diagonalmente dominante. Se transforma en diagonalmente dominante\n');
-    x_gaussseidel_a = gauss_seidel(A_a_dd, b_a, tol, max_iter);
-    x_jacobi_a = jacobi(A_a_dd, b_a, tol, max_iter);
+    x_gaussseidel_a = gauss_seidel(A_a_dd, b_a_dd, tol, max_iter);
+    x_jacobi_a = jacobi(A_a_dd, b_a_dd, tol, max_iter);
 end
-fprintf('Solución Gauss-Seidel: x = [%f; %f; %f]\n', x_gaussseidel_a(1), x_gaussseidel_a(2), x_gaussseidel_a(3));
-fprintf('Solución Jacobi: x = [%f; %f; %f]\n', x_jacobi_a(1), x_jacobi_a(2), x_jacobi_a(3));
+fprintf('Solucion Gauss-Seidel: x = [%f; %f; %f]\n', x_gaussseidel_a(1), x_gaussseidel_a(2), x_gaussseidel_a(3));
+fprintf('Solucion Jacobi: x = [%f; %f; %f]\n', x_jacobi_a(1), x_jacobi_a(2), x_jacobi_a(3));
 
 fprintf('Sistema b)\n');
 if is_diagonally_dominant(A_b)
@@ -41,13 +40,13 @@ if is_diagonally_dominant(A_b)
     x_gaussseidel_b = gauss_seidel(A_b, b_b, tol, max_iter);
     x_jacobi_b = jacobi(A_b, b_b, tol, max_iter);
 else
-    A_b_dd = make_diagonally_dominant(A_b);
+    [A_b_dd, b_b_dd] = make_diagonally_dominant(A_b, b_b);
     fprintf('La matriz no es diagonalmente dominante. Se transforma en diagonalmente dominante\n');
-    x_gaussseidel_b = gauss_seidel(A_b_dd, b_b, tol, max_iter);
-    x_jacobi_b = jacobi(A_b_dd, b_b, tol, max_iter);
+    x_gaussseidel_b = gauss_seidel(A_b_dd, b_b_dd, tol, max_iter);
+    x_jacobi_b = jacobi(A_b_dd, b_b_dd, tol, max_iter);
 end
-fprintf('Solución Gauss-Seidel: x = [%f; %f; %f]\n', x_gaussseidel_b(1), x_gaussseidel_b(2), x_gaussseidel_b(3));
-fprintf('Solución Jacobi: x = [%f; %f; %f]\n', x_jacobi_b(1), x_jacobi_b(2), x_jacobi_b(3));
+fprintf('Solucion Gauss-Seidel: x = [%f; %f; %f]\n', x_gaussseidel_b(1), x_gaussseidel_b(2), x_gaussseidel_b(3));
+fprintf('Solucion Jacobi: x = [%f; %f; %f]\n', x_jacobi_b(1), x_jacobi_b(2), x_jacobi_b(3));
 
 fprintf('Sistema c)\n');
 if is_diagonally_dominant(A_c)
@@ -55,16 +54,16 @@ if is_diagonally_dominant(A_c)
     x_gaussseidel_c = gauss_seidel(A_c, b_c, tol, max_iter);
     x_jacobi_c = jacobi(A_c, b_c, tol, max_iter);
 else
-    A_c_dd = make_diagonally_dominant(A_c);
+    [A_c_dd, b_c_dd] = make_diagonally_dominant(A_c, b_c);
     fprintf('La matriz no es diagonalmente dominante. Se transforma en diagonalmente dominante\n');
-    x_gaussseidel_c = gauss_seidel(A_c_dd, b_c, tol, max_iter);
-    x_jacobi_c = jacobi(A_c_dd, b_c, tol, max_iter);
+    x_gaussseidel_c = gauss_seidel(A_c_dd, b_c_dd, tol, max_iter);
+    x_jacobi_c = jacobi(A_c_dd, b_c_dd, tol, max_iter);
 end
-fprintf('Solución Gauss-Seidel: x = [%f; %f; %f]\n', x_gaussseidel_c(1), x_gaussseidel_c(2), x_gaussseidel_c(3));
-fprintf('Solución Jacobi: x = [%f; %f; %f]\n', x_jacobi_c(1), x_jacobi_c(2), x_jacobi_c(3));
+fprintf('Solucion Gauss-Seidel: x = [%f; %f; %f]\n', x_gaussseidel_c(1), x_gaussseidel_c(2), x_gaussseidel_c(3));
+fprintf('Solucion Jacobi: x = [%f; %f; %f]\n', x_jacobi_c(1), x_jacobi_c(2), x_jacobi_c(3));
 
-% Función para revisar si es diagonalmente dominante
-function is_dd = is_diagonally_dominant(A)
+% Funcion para revisar si es diagonalmente dominante
+function is_dd = is_diagonally_dominant(A,~)
     is_dd = true;
     for i = 1:size(A, 1)
         sum = 0;
@@ -80,28 +79,7 @@ function is_dd = is_diagonally_dominant(A)
     end
 end
 
-% Función para transformar una matriz no dominante en una dominante
-function [A_dd, b_dd] = make_diagonally_dominant(A, b)
-    A_dd = A;
-    b_dd = b;
-    n = size(A, 1);
-    
-    for i = 1:n
-        % Buscar la fila con el mayor valor absoluto en la columna i
-        [~, idx] = max(abs(A(:, i)));
-        
-        % Intercambiar la fila actual con la fila encontrada
-        A_dd([i, idx], :) = A_dd([idx, i], :);
-        b_dd([i, idx]) = b_dd([idx, i]);
-        
-        % Verificar si la fila es diagonalmente dominante
-        if abs(A_dd(i, i)) < sum(abs(A_dd(i, [1:i-1, i+1:end])))
-            % Si no es diagonalmente dominante, no hacer nada
-            % ya que la permutación de filas es suficiente
-        end
-    end
-end
-% Método de Gauss-Seidel
+% Metodo de Gauss-Seidel
 function x = gauss_seidel(A, b, tol, max_iter)
     x = zeros(size(A, 2), 1);
     for i = 1:max_iter
@@ -121,7 +99,7 @@ function x = gauss_seidel(A, b, tol, max_iter)
     end
 end
 
-% Método de Jacobi
+% Metodo de Jacobi
 function x = jacobi(A, b, tol, max_iter)
     x = zeros(size(A, 2), 1);
     D = diag(A);
@@ -134,4 +112,3 @@ function x = jacobi(A, b, tol, max_iter)
         x = x_new;
     end
 end
-
