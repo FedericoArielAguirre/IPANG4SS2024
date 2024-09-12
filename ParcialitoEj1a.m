@@ -8,7 +8,7 @@ sum_partial = 0;
 term = 0;
 
 % Calculamos la suma parcial de los primeros 15 términos
-for n = 3:18
+for n = 3:17 % era 17, no 18
     term = ((-1)^(n+1))*n^2 / 3^n;
     sum_partial = sum_partial + term;
 end
