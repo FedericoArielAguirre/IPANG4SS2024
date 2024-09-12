@@ -8,11 +8,13 @@ clear
 x = [0.9, 1.3, 1.9, 2.1, 2.6, 3.0, 3.9, 4.4, 4.7, 5.0, 6.0, 7.0, 8.0, 9.2, 10.5, 11.3, 11.6, 12.0, 12.6, 13.0, 13.3];
 y = [1.3, 1.5, 1.85, 2.1, 2.6, 2.7, 2.4, 2.15, 2.05, 2.1, 2.25, 2.3, 2.25, 1.95, 1.4, 0.9, 0.7, 0.6, 0.5, 0.4, 0.25];
 
-% Definir los grados del polinomio
-grados = [2, 3, 5, 7, 9];
+% Definimos los grados del polinomio que queremos plotear
+degrees = [2, 3, 5, 7, 9];
 
-% Bucle para cada grado y realizar interpolación polinómica
-for deg = grados
+% Loop para cada grado
+for i = 1:length(degrees)
+    deg = degrees(i);
+    
     % Ajustar el polinomio
     coeffs = polyfit(x, y, deg);
     
@@ -21,12 +23,11 @@ for deg = grados
     y_eval = polyval(coeffs, x_eval);
     
     % Graficar el polinomio y los puntos de datos
+    figure;
     plot(x, y, 'o', x_eval, y_eval);
     xlabel('x');
     ylabel('f(x)');
-    title(['Interpolación Polinómica (Grado ', num2str(deg), ')']);
-    
-    % pause(1/10) ;
+    title(['Interpolacion Polinomica (Grado ', num2str(deg), ')']);
 end
 
 % Metodo de Interpolacion Polinomial
