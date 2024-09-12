@@ -9,7 +9,8 @@ clear;
 %Seccion 1
 
 % Definimos el número de mallas
-n = 6;
+%n = 6;
+ n = input('Ingrese un valor de n:');
 
 % Creamos la matriz de coeficientes
 A = zeros(n, n);
