@@ -3,43 +3,40 @@
 % Borramos la ventana de comandos y las variables previas
 clc
 clear
-% Conjunto de puntos
+
+% Definir los puntos dados
 x = [0, 0.25, 0.5, 0.75, 1];
-y = [1, 3, 5, 4.5, 3];
+f = [1, 3, 5, 4.5, 3];
 
-% Número de puntos
+% Calcular la tabla de diferencias divididas
 n = length(x);
+diff_div = zeros(n, n);
+diff_div(:, 1) = f';
 
-% Tabla de diferencias divididas
-D = zeros(n, n);
-D(:, 1) = y;
-for j = 2:n
-    for i = 1:n-j+1
-        D(i, j) = (D(i+1, j-1) - D(i, j-1)) / (x(i+j-1) - x(i));
+for i = 2:n
+    for j = 2:i
+        diff_div(i, j) = (diff_div(i-1, j-1) - diff_div(i, j-1)) / (x(i) - x(i-j+1));
     end
 end
 
 % Mostrar la tabla de diferencias divididas
 fprintf('Tabla de diferencias divididas:\n');
-for i = 1:n
-    for j = 1:n-i+1
-        fprintf('%f ', D(i, j));
-    end
-    fprintf('\n');
+disp(diff_div);
+
+% Construir el polinomio interpolante de Newton
+p = diff_div(1, 1);
+for i = 2:n
+    p = p + diff_div(i, i) * prod(x - x(1:i-1));
 end
 
-% Polinomio interpolante
-p = @(x) D(1, 1);
-for i = 2:n
-    p = @(x) p(x) + D(1, i) * prod(x - x(1:i-1));
-end
+% Mostrar el polinomio interpolante
+fprintf('Polinomio interpolante: ');
+disp(p);
 
 % Graficar el polinomio interpolante
 xx = 0:0.01:1;
-yy = p(xx);
-figure;
-plot(xx, yy, 'b-', x, y, 'ro');
+yy = polyval(p, xx);
+plot(xx, yy);
 xlabel('x');
 ylabel('f(x)');
-title('Polinomio interpolante');
-grid on;
+title('Polinomio interpolante de Newton');
