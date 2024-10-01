@@ -27,6 +27,7 @@ disp(diff_div);
 p = diff_div(1, 1);
 for i = 2:n
     p = p + diff_div(i, i) * prod(x - x(1:i-1));
+    % Revisar esta linea, utilizar comando conv    
 end
 
 % Mostrar el polinomio interpolante
