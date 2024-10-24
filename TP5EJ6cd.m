@@ -12,6 +12,8 @@ f4 = @(x) cos(x) ./ sqrt(pi^2 - x.^2);
 a3 = -1; b3 = 1;
 a4 = 0; b4 = pi;
 
+% Revisar que metodo conviene con cada integral
+
 % Numero de puntos de cuadratura
 n_values = 2:5;
 
