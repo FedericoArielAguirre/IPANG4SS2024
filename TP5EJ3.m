@@ -13,7 +13,7 @@ a = 0;
 b = 2 * pi;
 
 % Número de subintervalos (debe ser par para el método de Simpson)
-n = 10; % Comenzamos con 10, se puede aumentar si es necesario
+n = 8; % Comenzamos con 8, se puede aumentar si es necesario
 error = 1; % Inicializamos el error
 tolerancia = 0.05; % Tolerancia del 5%
 
@@ -36,4 +36,4 @@ while error > tolerancia
 end
 
 % Resultado final
-fprintf('La longitud de la chapa corrugada necesaria es: %.10f pulgadas\n', L);
+fprintf('La longitud de la chapa corrugada necesaria es: %.3f pulgadas\n', L);
